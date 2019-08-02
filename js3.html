@@ -1,0 +1,195 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script>
+			//dziesiatki odpowiadaja wierszowi, jednosci kolumnie(id)
+			var items = new Array(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55);
+			var clickCounter = 0;
+		
+			//funkcja zmieniająca kolor klikniętego pola
+			$(document).ready(function(){
+				$(".tile").on({
+					click: function(){
+						//if($(this).css("background-color") != "rgb(249, 246, 176)"){ //wersja w której można klikać na nieaktywne pola
+							var id0 = "#" + ((parseInt($(this).attr('id')))).toString();
+							var id1 = "#" + ((parseInt($(this).attr('id'))) - 10).toString();
+							var id2 = "#" + ((parseInt($(this).attr('id'))) + 10).toString();
+							var id3 = "#" + ((parseInt($(this).attr('id'))) - 1).toString();
+							var id4 = "#" + ((parseInt($(this).attr('id'))) + 1).toString();
+							
+							switchColor($(id0).css("background-color"), id0);
+							switchColor($(id1).css("background-color"), id1);
+							switchColor($(id2).css("background-color"), id2);
+							switchColor($(id3).css("background-color"), id3);
+							switchColor($(id4).css("background-color"), id4);
+							clickCounter++;
+						//}
+						displayClicks();
+						if(verifyWin()){
+							displayWin();
+							$("#playagain").show(3000);
+						}
+					}
+				});
+			});
+			
+			// function which switch color of tile(accept rgb and tile)
+			function switchColor(rgb, tile){
+			switch(rgb) {
+				case "rgb(179, 215, 243)":
+					//jeżeli niezamalowany to zmienia na zamalowany
+					$(tile).css("background-color", "#199A9A");
+					break;
+				case "rgb(249, 246, 176)":
+					//jezeli kolor tła to nic nie zmienia
+					break;
+				case "rgb(25, 154, 154)":
+					// jeżeli zamalowany to zmienia na niezamalowany
+					$(tile).css("background-color","#B3D7F3");
+					break;
+				}
+			}
+			
+			//ustala losowo 8 nieaktywnych pól
+			$(document).ready(function(){
+				for(var i=0; i<8;){
+					var tile = "#" + generateNumber().toString();
+					if($(tile).css("background-color") != "rgb(249, 246, 176)"){
+						$(tile).css("background-color","#F9F6B0");
+						i++;
+					}
+				}
+			});
+			
+			//losuje liczbe z przedzialolu pol
+			function generateNumber(){
+				var item = items[Math.floor(Math.random()*items.length)];
+				return item;
+			}
+			
+			//wyswietlanie ilosci klikniec
+			function displayClicks(){
+				document.getElementById("click").innerHTML = "Liczba klikniec: " + clickCounter;
+			}
+			
+			//zmiana napisu na wygrana
+			function displayWin(){
+				document.getElementById("title").innerHTML = "WYGRALES";
+			}
+			
+			//funkcja weryfikująca czy ukladanka jest rozwiazana
+			function verifyWin(){
+				var fields = 0;
+				var id;
+				for(var i=0; i<items.length; i++){
+					id = "#" + items[i].toString();
+					if($(id).css("background-color") == "rgb(179, 215, 243)"){
+						fields++;
+					}
+				}
+				if(fields == 0)
+					return true;
+				else
+					return false;
+			}
+			
+			//wyswietlanie planszy w momencie rozpoczecia gry
+			$(document).ready(function(){
+				$(".container").hide();
+				$("#playagain").hide();
+				$(".button_div").click(function(){
+					$(".button_div").hide(1000);
+					$(".container").show(1000);
+				});
+			});
+			
+		</script>
+		<style type="text/css" media="screen">
+
+			.container {
+				width: 520px;
+				height: 520px;
+				background-color: #F9F6B0; <!-- rgb(249, 246, 176) -->
+			}
+
+			div div {
+				width: 100px;
+				height: 100px;
+				margin: 2px;
+				float: left;
+				background-color:#B3D7F3; <!-- rgb(179, 215, 243) -->
+			}
+			html, body {
+				height: 100%;
+				background-color: #288A8A;
+			}
+			.clicks, .title {
+				background-color: #288A8A;
+				text-align: center;
+				font-family: Helvetica;
+				font-size: 50px;
+			}
+			.title{
+				height:80px;
+				background-color: #F9F6B0;
+				margin-bottom: 10px;
+				text-align: center;
+				line-height: 80px;
+				
+			}
+			.button_div{
+				height: 100px;
+				width: 300px;
+				background-color: #F9F6B0;
+				margin: 30px;
+				text-align: center;
+				font-family: Helvetica;
+				font-size: 30px;
+				line-height: 100px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<center>
+		<div class="title">
+			<strong id="title">Ukladanka</strong>
+		</div>
+		<div class="button_div">
+			<strong>Rozpocznij gre</strong>
+		</div>
+		<div class="container">
+			<div class="tile" id="11"></div>
+			<div class="tile" id="12"></div>
+			<div class="tile" id="13"></div>
+			<div class="tile" id="14"></div>
+			<div class="tile" id="15"></div>
+			<div class="tile" id="21"></div>
+			<div class="tile" id="22"></div>
+			<div class="tile" id="23"></div>
+			<div class="tile" id="24"></div>
+			<div class="tile" id="25"></div>
+			<div class="tile" id="31"></div>
+			<div class="tile" id="32"></div>
+			<div class="tile" id="33"></div>
+			<div class="tile" id="34"></div>
+			<div class="tile" id="35"></div>
+			<div class="tile" id="41"></div>
+			<div class="tile" id="42"></div>
+			<div class="tile" id="43"></div>
+			<div class="tile" id="44"></div>
+			<div class="tile" id="45"></div>
+			<div class="tile" id="51"></div>
+			<div class="tile" id="52"></div>
+			<div class="tile" id="53"></div>
+			<div class="tile" id="54"></div>
+			<div class="tile" id="55"></div>
+		</div>
+		<div class = "clicks">
+			<strong id="click"></strong>
+		</div>
+		<div class="button_div" id="playagain" onClick="window.location.reload();"><strong>Zagraj ponownie</strong></div>
+		</center>
+	</body>
+
+</html>
